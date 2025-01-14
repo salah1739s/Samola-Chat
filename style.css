@@ -5,7 +5,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8);
     background-size: 400% 400%;
     animation: rainbowBackground 10s ease infinite;
@@ -24,9 +24,9 @@ h1 {
     100% { background-position: 0% 50%; }
 }
 
-/* صندوق الشات مكبر */
+/* صندوق الشات */
 #chat-container {
-    width: 80%;
+    width: 90%;
     max-width: 900px;
     height: 80vh;
     background: rgba(0, 0, 0, 0.6); 
@@ -36,27 +36,28 @@ h1 {
     flex-direction: column;
     backdrop-filter: blur(20px);
     padding: 20px;
+    box-sizing: border-box;
 }
 
 /* منطقة عرض الرسائل */
 #chat {
     flex: 1;
-    padding: 20px;
+    padding: 15px;
     overflow-y: auto;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
 }
 
 /* الرسائل */
 .message {
     max-width: 75%;
-    padding: 15px;
+    padding: 10px;
     border-radius: 20px;
     word-wrap: break-word;
-    font-size: 18px;
-    line-height: 1.5;
+    font-size: 16px;
+    line-height: 1.4;
 }
 
 .message.user-message {
@@ -71,38 +72,29 @@ h1 {
     color: #fff;
 }
 
-.messageInput {
-    padding-bottom: 10px;
-}
-
 /* منطقة الإدخال */
-/* منطقة الإدخال - تعديل الحجم */
 #input-area {
     display: flex;
     align-items: center;
-    padding: 15px;
+    padding: 10px;
     border-top: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 15px;
     background: rgba(255, 255, 255, 0.1);
+    box-sizing: border-box;
 }
 
 /* حقل الإدخال */
 #input-area input {
     flex: 1;
-    padding: 15px;
-    font-size: 18px;
+    padding: 10px;
+    font-size: 16px;
     border: none;
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.2);
     color: #fff;
     outline: none;
     margin-right: 10px;
-}
-
-/* إضافة تأثير عند التركيز */
-#input-area input:focus {
-    background: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    box-sizing: border-box;
 }
 
 /* زر الإرسال */
@@ -124,3 +116,40 @@ h1 {
     transform: scale(1.1);
 }
 
+/* نقاط التوقف للشاشات المختلفة */
+@media (max-width: 768px) {
+    #chat-container {
+        width: 95%;
+        height: 85vh;
+    }
+    
+    .message {
+        font-size: 14px;
+    }
+    
+    #input-area input {
+        font-size: 14px;
+    }
+    
+    #sendButton {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    #chat-container {
+        width: 100%;
+        height: 90vh;
+        border-radius: 0;
+        padding: 10px;
+    }
+    
+    #chat {
+        padding: 10px;
+    }
+    
+    #input-area {
+        padding: 10px;
+    }
+}
