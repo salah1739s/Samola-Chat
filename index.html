@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Bot</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="chat-container">
+        <h1>Chat Bot</h1>
+        <div id="chat">
+            <div class="message bot-message">Hello! How can I assist you today?</div>
+        </div>
+        <div id="input-area">
+            <input type="text" id="messageInput" placeholder="Type your message here...">
+            <button id="sendButton">إرسال</button>
+        </div>
+    </div>
+
+    <script>
+        // إزالة الرموز الخاصة
+        function removeSpecialCharacters(input) {
+            return input.replace(/[!@#$%^&*()_~\[\]{}|;:,.<>?]/g, '');
+        }
+
+        // إرسال الرسالة
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            let userMessage = messageInput.value.trim();
+
+            if (userMessage) {
+                userMessage = removeSpecialCharacters(userMessage); // إزالة الرموز الخاصة
+
+                // التحقق من اللغة وإعادة التوجيه
+                if (containsArabic(userMessage) && !isCurrentPage("index-ar.html")) {
+                    redirectToPage("index-ar.html"); // تحويل إلى الصفحة العربية
+                    return;
+                } else if (containsEnglish(userMessage) && !isCurrentPage("index.html")) {
+                    redirectToPage("index.html"); // تحويل إلى الصفحة الإنجليزية
+                    return;
+                }
+
+                // عرض الرسالة والرد
+                displayUserMessage(userMessage);
+                const botResponse = getBotResponse(userMessage);
+
+                // تأخير الرد
+                setTimeout(() => {
+                    displayBotResponse(botResponse);
+                }, 2000);
+            }
+        }
+
+        // التحقق إذا كانت الرسالة تحتوي على أحرف عربية
+        function containsArabic(text) {
+            const arabicRegex = /[\u0600-\u06FF]/;
+            return arabicRegex.test(text);
+        }
+
+        // التحقق إذا كانت الرسالة تحتوي على أحرف إنجليزية
+        function containsEnglish(text) {
+            const englishRegex = /[a-zA-Z]/;
+            return englishRegex.test(text);
+        }
+
+        // التحقق من الصفحة الحالية
+        function isCurrentPage(page) {
+            return window.location.pathname.includes(page);
+        }
+
+        // إعادة التوجيه إلى صفحة معينة
+        function redirectToPage(page) {
+            window.location.href = page;
+        }
+
+        // عرض رسالة المستخدم
+        function displayUserMessage(message) {
+            const chat = document.getElementById('chat');
+            chat.innerHTML += `<div class="message user-message">${message}</div>`;
+            document.getElementById('messageInput').value = ''; // تفريغ الحقل
+            chat.scrollTop = chat.scrollHeight; // التمرير للأسفل
+        }
+
+        // عرض رد الروبوت
+        function displayBotResponse(response) {
+            const chat = document.getElementById('chat');
+            chat.innerHTML += `<div class="message bot-message">${response}</div>`;
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        // الحصول على رد الروبوت
+        function getBotResponse(userMessage) {
+            if (userMessage.startsWith("اسمي هو")) {
+                const userName = userMessage.substring(7).trim();
+                if (userName) {
+                    return `مرحبًا بك، ${userName}! 😊 كيف يمكنني مساعدتك اليوم؟`;
+                } else {
+                    return "يبدو أنك لم تذكر اسمك. هل يمكنك المحاولة مرة أخرى؟";
+                }
+            }
+
+            // الردود الافتراضية
+            const responses = {
+                "hi": "مرحبًا! كيف يمكنني مساعدتك؟",
+                "hello": "بالطبع! أنا هنا لمساعدتك.",
+                "السلام عليكم": "وعليكم السلام! كيف حالك اليوم؟",
+                "الدردشة": "هذا روبوت دردشة! كيف يمكنني مساعدتك؟"
+            };
+
+            return responses[userMessage.toLowerCase()] || "عذرًا، لم أفهم ذلك. هل يمكنك التوضيح؟";
+        }
+
+        // تفعيل زر الإرسال
+        document.getElementById('sendButton').onclick = sendMessage;
+
+        // تفعيل الإرسال عبر Enter
+        document.getElementById('messageInput').addEventListener('keydown', (event) => {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
